@@ -3,7 +3,6 @@ package com.geofencing
 import com.geofencing.db.DatabaseFactory
 import com.geofencing.models.ApiResponse
 import com.geofencing.routes.configureRoutes
-import com.geofencing.security.JwtConfig
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -61,18 +60,7 @@ fun Application.module() {
         }
     }
 
-    // 5. Configure Authentication with Supabase Auth JWT
-    install(Authentication) {
-        jwt("auth-jwt") {
-            realm = "GeoFencingBackend"
-            verifier(JwtConfig.verifier)
-            validate { credential ->
-                JwtConfig.validateCredential(credential)
-            }
-        }
-    }
-
-    // 6. Configure Routing
+    // 5. Configure Routing
     routing {
         configureRoutes()
     }

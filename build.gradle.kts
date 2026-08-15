@@ -64,14 +64,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         jvmTarget = "17"
     }
 }
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = "com.geofencing.ApplicationKt"
-    }
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(sourceSets.main.get().output)
-    dependsOn(configurations.runtimeClasspath)
-    from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
+tasks.withType<JavaCompile> {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
 }

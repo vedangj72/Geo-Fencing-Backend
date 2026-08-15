@@ -2,7 +2,6 @@ package com.geofencing.routes
 
 import com.geofencing.models.*
 import com.geofencing.repository.*
-import com.geofencing.security.getUserId
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -16,9 +15,7 @@ fun ApplicationCall.extractUserId(explicitUserId: String? = null): String {
     val queryUserId = request.queryParameters["userId"]
     if (!queryUserId.isNullOrBlank()) return queryUserId
     
-    val jwtUserId = getUserId()
-    if (!jwtUserId.isNullOrBlank()) return jwtUserId
-
+    // Fallback default: Vedang seed UUID
     return "11111111-1111-1111-1111-111111111111"
 }
 

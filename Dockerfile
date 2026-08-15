@@ -6,19 +6,19 @@ WORKDIR /app
 # Copy project source and configuration
 COPY --chown=gradle:gradle . .
 
-# Build application jar
-RUN gradle build --no-daemon -x test
+# Build application distribution
+RUN gradle installDist --no-daemon -x test
 
 # 2. Production Runtime Stage
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Copy built jar from build stage
-COPY --from=build /app/build/libs/*.jar app.jar
+# Copy built distribution from build stage
+COPY --from=build /app/build/install/Geo-Fencing-Backend /app
 
 # Expose port (Render automatically assigns PORT env variable)
 ENV PORT=8080
 EXPOSE 8080
 
 # Run Application
-CMD ["java", "-jar", "app.jar"]
+CMD ["/app/bin/Geo-Fencing-Backend"]
