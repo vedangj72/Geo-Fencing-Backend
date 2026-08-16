@@ -27,6 +27,9 @@ object DatabaseFactory {
             ?: System.getenv("SUPABASE_DB_PASSWORD") 
             ?: "GeoFencing$1763"
 
+        System.setProperty("java.net.preferIPv4Stack", "true")
+        System.setProperty("java.net.preferIPv4Addresses", "true")
+
         val cleanUrl = when {
             dbUrl.contains("@") -> "jdbc:postgresql://" + dbUrl.substringAfter("@")
             !dbUrl.startsWith("jdbc:") -> "jdbc:$dbUrl"
@@ -40,10 +43,11 @@ object DatabaseFactory {
             username = dbUser
             password = dbPassword
             driverClassName = "org.postgresql.Driver"
-            maximumPoolSize = 10
-            minimumIdle = 2
+            maximumPoolSize = 5
+            minimumIdle = 1
             idleTimeout = 300000
             connectionTimeout = 20000
+            initializationFailTimeout = -1L
             isAutoCommit = true
         }
 
